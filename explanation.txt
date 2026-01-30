@@ -1,0 +1,9 @@
+This Linux kernel module is a solution to the classic producer-consumer problem using semaphores and kernel threads. The module is designed to read processes of a given user ID, referred to as uid, from the system and write them to a buffer of size buff_size.
+
+The kthread_producer function serves as the producer, it iterates over all the system processes and for processes with uid that matches the provided one, it writes the process to the buffer. The producer ensures it only writes to the buffer if it's not full, and it has exclusive access, via the empty and mutex semaphores respectively.
+
+The kthread_consumer function serves as the consumer, reading from the buffer if it's not empty, and it can gain exclusive access, controlled by the full and mutex semaphores, respectively. It then calculates and prints the elapsed time since the process start.
+
+On module initialization, via project_init, the buffer and semaphores are initialized, and the producer and consumer threads are created. Upon module exit, project_exit stops all threads, prints the total elapsed time for all processes, and frees the buffer.
+
+The solution uses semaphores to ensure synchronized access to the buffer and prevent race conditions. The use of kernel threads allows the creation of multiple producers and consumers, providing a flexible and adjustable solution to the producer-consumer problem.
